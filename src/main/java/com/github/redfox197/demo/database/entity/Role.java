@@ -1,9 +1,12 @@
 package com.github.redfox197.demo.database.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Role {
@@ -14,6 +17,9 @@ public class Role {
 
     private String nome;
     private String descrizione;
+
+    @OneToMany(mappedBy = "role")
+    private List<Utente> utenti;
 
     public Role() {
     }
