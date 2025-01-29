@@ -23,7 +23,7 @@ public class RoleService {
         return roleRepo.findAll();
     }
 
-    public Optional<Role> findById(Long id) {
+    public Optional<Role> findById(long id) {
         return roleRepo.findById(id);
     }
 

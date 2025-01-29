@@ -3,6 +3,7 @@ package com.github.redfox197.demo.cli;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.github.redfox197.demo.database.entity.Role;
 import com.github.redfox197.demo.database.entity.Utente;
 import com.github.redfox197.demo.database.service.RoleService;
 import com.github.redfox197.demo.database.service.UtenteService;
@@ -86,17 +87,29 @@ public class CliManager {
         System.out.print("Cognome: ");
         utente.setCognome(scanner.nextLine());
 
-        System.out.println("Username: ");
+        System.out.print("Username: ");
         utente.setUsername(scanner.nextLine());
 
-        System.out.println("Password: ");
+        System.out.print("Password: ");
         utente.setPassword(scanner.nextLine());
 
-        System.out.println("Credito: ");
+        System.out.print("Credito: ");
         utente.setCredito(scanner.nextInt());
         scanner.nextLine();
 
+        printRoles();
+        System.out.print("Role id: ");
+        Role role = roleService.findById(scanner.nextLong()).orElse(null);
+        utente.setRole(role);
+        scanner.nextLine();
+
         System.out.println("Utente salvato!");
+        System.out.println();
+    }
+
+    private void printRoles() {
+        System.out.println("Ruoli disponibili");
+        System.out.println(roleService.findAll());
         System.out.println();
     }
 
@@ -124,6 +137,12 @@ public class CliManager {
 
         System.out.print("credito (" + utente.getCredito() + "): ");
         utente.setCredito(scanner.nextInt());
+        scanner.nextLine();
+
+        printRoles();
+        System.out.print("Role id (" + utente.getRole().getId() + "): ");
+        Role role = roleService.findById(scanner.nextLong()).orElse(null);
+        utente.setRole(role);
         scanner.nextLine();
 
         utenteService.save(utente);
