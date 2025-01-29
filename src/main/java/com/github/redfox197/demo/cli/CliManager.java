@@ -103,6 +103,7 @@ public class CliManager {
         utente.setRole(role);
         scanner.nextLine();
 
+        utenteService.save(utente);
         System.out.println("Utente salvato!");
         System.out.println();
     }
@@ -116,6 +117,7 @@ public class CliManager {
     private void edit() {
         System.out.print("id: ");
         Optional<Utente> optUtente = utenteService.findById(scanner.nextLong());
+        scanner.nextLine();
 
         if (!optUtente.isPresent()) {
             System.out.println("Utente non trovato!");
@@ -151,8 +153,9 @@ public class CliManager {
     }
 
     private void delete() {
-        System.out.println("id: ");
+        System.out.print("id: ");
         Optional<Utente> optUtente = utenteService.findById(scanner.nextLong());
+        scanner.nextLine();
 
         if (!optUtente.isPresent()) {
             System.out.println("Utente non trovato!");
