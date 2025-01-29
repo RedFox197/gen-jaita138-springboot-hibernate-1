@@ -6,12 +6,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.github.redfox197.demo.cli.CliManager;
+import com.github.redfox197.demo.database.service.RoleService;
 import com.github.redfox197.demo.database.service.UtenteService;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 	@Autowired
 	private UtenteService utenteService;
+	@Autowired
+	private RoleService roleService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -19,7 +22,7 @@ public class DemoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		new CliManager(utenteService);
+		new CliManager(utenteService, roleService);
 	}
 
 }

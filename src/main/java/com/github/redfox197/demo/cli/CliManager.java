@@ -4,14 +4,17 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import com.github.redfox197.demo.database.entity.Utente;
+import com.github.redfox197.demo.database.service.RoleService;
 import com.github.redfox197.demo.database.service.UtenteService;
 
 public class CliManager {
     private Scanner scanner;
-    private UtenteService service;
+    private UtenteService utenteService;
+    private RoleService roleService;
 
-    public CliManager(UtenteService service) {
-        this.service = service;
+    public CliManager(UtenteService utenteService, RoleService roleService) {
+        this.utenteService = utenteService;
+        this.roleService = roleService;
 
         scanner = new Scanner(System.in);
         printOptions();
@@ -70,7 +73,7 @@ public class CliManager {
 
     private void readAll() {
         System.out.println("Utenti:");
-        System.out.println(service.findAll());
+        System.out.println(utenteService.findAll());
         System.out.println();
     }
 
@@ -99,7 +102,7 @@ public class CliManager {
 
     private void edit() {
         System.out.print("id: ");
-        Optional<Utente> optUtente = service.findById(scanner.nextLong());
+        Optional<Utente> optUtente = utenteService.findById(scanner.nextLong());
 
         if (!optUtente.isPresent()) {
             System.out.println("Utente non trovato!");
@@ -123,46 +126,46 @@ public class CliManager {
         utente.setCredito(scanner.nextInt());
         scanner.nextLine();
 
-        service.save(utente);
+        utenteService.save(utente);
         System.out.println("Utente modificato!");
         System.out.println();
     }
 
     private void delete() {
         System.out.println("id: ");
-        Optional<Utente> optUtente = service.findById(scanner.nextLong());
+        Optional<Utente> optUtente = utenteService.findById(scanner.nextLong());
 
         if (!optUtente.isPresent()) {
             System.out.println("Utente non trovato!");
             return;
         }
 
-        service.delete(optUtente.get());
+        utenteService.delete(optUtente.get());
         System.out.println("Utente eliminato!");
         System.out.println();
     }
 
     private void opt5() {
         System.out.println("Utenti che iniziano con a");
-        System.out.println(service.findByNomeStartingWithA());
+        System.out.println(utenteService.findByNomeStartingWithA());
         System.out.println();
     }
 
     private void opt6() {
         System.out.println("Utenti con credito superiore a 10");
-        System.out.println(service.findByCreditoGreatherThan10());
+        System.out.println(utenteService.findByCreditoGreatherThan10());
         System.out.println();
     }
 
     private void opt7() {
         System.out.println("Utenti con nome o cognome null");
-        System.out.println(service.findByNomeNullOrCognomeNull());
+        System.out.println(utenteService.findByNomeNullOrCognomeNull());
         System.out.println();
     }
 
     private void opt8() {
         System.out.println("Utente con credito positivo e inferiore a 10");
-        System.out.println(service.findyByCreditoBetween0And10());
+        System.out.println(utenteService.findyByCreditoBetween0And10());
         System.out.println();
     }
 }
