@@ -40,7 +40,7 @@ public class Utente {
         this.credito = credito;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

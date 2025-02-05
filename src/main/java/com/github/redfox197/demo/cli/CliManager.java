@@ -80,25 +80,31 @@ public class CliManager {
 
     private void insert() {
         Utente utente = new Utente();
+        salvaUtente(utente);
+    }
 
-        System.out.print("Nome: ");
+    private void salvaUtente(Utente utente) {
+        boolean isEdit = utente.getId() != null;
+
+        System.out.println("Nome: " + (isEdit ? "(" + utente.getNome() + ")" : ""));
+        System.out.print("Nome" + (isEdit ? "(" + utente.getNome() + ")" : "") + ": ");
         utente.setNome(scanner.nextLine());
 
-        System.out.print("Cognome: ");
+        System.out.print("Cognome: " + (isEdit ? "(" + utente.getCognome() + ")" : "") + ": ");
         utente.setCognome(scanner.nextLine());
 
-        System.out.print("Username: ");
+        System.out.print("Username: " + (isEdit ? "(" + utente.getUsername() + ")" : "") + ": ");
         utente.setUsername(scanner.nextLine());
 
-        System.out.print("Password: ");
+        System.out.print("Password: " + (isEdit ? "(" + utente.getPassword() + ")" : "") + ": ");
         utente.setPassword(scanner.nextLine());
 
-        System.out.print("Credito: ");
+        System.out.print("Credito: " + (isEdit ? "(" + utente.getCredito() + ")" : "") + ": ");
         utente.setCredito(scanner.nextInt());
         scanner.nextLine();
 
         printRoles();
-        System.out.print("Role id: ");
+        System.out.print("Role id: " + (isEdit ? "(" + utente.getRole().getId() + ")" : ""));
         Role role = roleService.findById(scanner.nextLong()).orElse(null);
         utente.setRole(role);
         scanner.nextLine();
@@ -125,31 +131,7 @@ public class CliManager {
         }
 
         Utente utente = optUtente.get();
-        System.out.print("nome (" + utente.getNome() + "): ");
-        utente.setNome(scanner.nextLine());
-
-        System.out.print("cognome (" + utente.getCognome() + "): ");
-        utente.setCognome(scanner.nextLine());
-
-        System.out.print("username (" + utente.getUsername() + "): ");
-        utente.setUsername(scanner.nextLine());
-
-        System.out.print("password (" + utente.getPassword() + "): ");
-        utente.setPassword(scanner.nextLine());
-
-        System.out.print("credito (" + utente.getCredito() + "): ");
-        utente.setCredito(scanner.nextInt());
-        scanner.nextLine();
-
-        printRoles();
-        System.out.print("Role id (" + utente.getRole().getId() + "): ");
-        Role role = roleService.findById(scanner.nextLong()).orElse(null);
-        utente.setRole(role);
-        scanner.nextLine();
-
-        utenteService.save(utente);
-        System.out.println("Utente modificato!");
-        System.out.println();
+        salvaUtente(utente);
     }
 
     private void delete() {
