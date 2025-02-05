@@ -85,8 +85,7 @@ public class CliManager {
 
     private void salvaUtente(Utente utente) {
         boolean isEdit = utente.getId() != null;
-
-        System.out.println("Nome: " + (isEdit ? "(" + utente.getNome() + ")" : ""));
+        
         System.out.print("Nome" + (isEdit ? "(" + utente.getNome() + ")" : "") + ": ");
         utente.setNome(scanner.nextLine());
 
