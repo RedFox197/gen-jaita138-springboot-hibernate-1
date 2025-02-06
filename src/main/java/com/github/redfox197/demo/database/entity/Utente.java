@@ -2,8 +2,6 @@ package com.github.redfox197.demo.database.entity;
 
 import java.util.List;
 
-import org.hibernate.annotations.ManyToAny;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -102,6 +100,14 @@ public class Utente {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<SubReddit> getSubReddits() {
+        return subReddits;
+    }
+
+    public void setSubReddits(List<SubReddit> subReddits) {
+        this.subReddits = subReddits;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.github.redfox197.demo.cli;
 
-import java.util.Optional;
 import java.util.Scanner;
 
 import com.github.redfox197.demo.database.entity.Role;
@@ -121,29 +120,28 @@ public class CliManager {
 
     private void edit() {
         System.out.print("id: ");
-        Optional<Utente> optUtente = utenteService.findById(scanner.nextLong());
+        Utente utente = utenteService.findById(scanner.nextLong());
         scanner.nextLine();
 
-        if (!optUtente.isPresent()) {
+        if (utente == null) {
             System.out.println("Utente non trovato!");
             return;
         }
 
-        Utente utente = optUtente.get();
         salvaUtente(utente);
     }
 
     private void delete() {
         System.out.print("id: ");
-        Optional<Utente> optUtente = utenteService.findById(scanner.nextLong());
+        Utente utente = utenteService.findById(scanner.nextLong());
         scanner.nextLine();
 
-        if (!optUtente.isPresent()) {
+        if (utente == null) {
             System.out.println("Utente non trovato!");
             return;
         }
 
-        utenteService.delete(optUtente.get());
+        utenteService.delete(utente);
         System.out.println("Utente eliminato!");
         System.out.println();
     }

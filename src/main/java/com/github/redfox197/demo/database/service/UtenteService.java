@@ -1,13 +1,15 @@
 package com.github.redfox197.demo.database.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.redfox197.demo.database.entity.Utente;
 import com.github.redfox197.demo.database.repository.UtenteRepo;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UtenteService {
@@ -26,8 +28,14 @@ public class UtenteService {
         utenteRepo.delete(utente);
     }
 
-    public Optional<Utente> findById(long id) {
-        return utenteRepo.findById(id);
+    @Transactional
+    public Utente findById(long id) {
+        Utente utente = utenteRepo.findById(id).orElse(null);
+
+        if (utente != null)
+            Hibernate.initialize(utente.getSubReddits());
+
+        return utente;
     }
 
     public List<Utente> findByNomeStartingWithA() {
