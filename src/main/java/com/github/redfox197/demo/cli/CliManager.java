@@ -1,20 +1,25 @@
 package com.github.redfox197.demo.cli;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.github.redfox197.demo.database.entity.Role;
+import com.github.redfox197.demo.database.entity.SubReddit;
 import com.github.redfox197.demo.database.entity.Utente;
 import com.github.redfox197.demo.database.service.RoleService;
+import com.github.redfox197.demo.database.service.SubRedditService;
 import com.github.redfox197.demo.database.service.UtenteService;
 
 public class CliManager {
     private Scanner scanner;
     private UtenteService utenteService;
     private RoleService roleService;
+    private SubRedditService subRedditService;
 
-    public CliManager(UtenteService utenteService, RoleService roleService) {
+    public CliManager(UtenteService utenteService, RoleService roleService, SubRedditService subRedditService) {
         this.utenteService = utenteService;
         this.roleService = roleService;
+        this.subRedditService = subRedditService;
 
         scanner = new Scanner(System.in);
         printOptions();
@@ -82,9 +87,25 @@ public class CliManager {
         salvaUtente(utente);
     }
 
+    private void edit() {
+        System.out.print("id: ");
+        Utente utente = utenteService.findById(scanner.nextLong());
+        scanner.nextLine();
+
+        if (utente == null) {
+            System.out.println("Utente non trovato!");
+            return;
+        }
+
+        System.out.println("SUBCOSO");
+        System.out.println(utente.getSubReddits());
+
+        salvaUtente(utente);
+    }
+
     private void salvaUtente(Utente utente) {
         boolean isEdit = utente.getId() != null;
-        
+
         System.out.print("Nome" + (isEdit ? "(" + utente.getNome() + ")" : "") + ": ");
         utente.setNome(scanner.nextLine());
 
@@ -107,6 +128,26 @@ public class CliManager {
         utente.setRole(role);
         scanner.nextLine();
 
+        System.out.println();
+        while (true) {
+            printSubReddits();
+            System.out.println("SubReddit id: ");
+            Long subRedditId = scanner.nextLong();
+            scanner.nextLine();
+
+            SubReddit subReddit = subRedditService.findById(subRedditId);
+            if (subReddit == null) {
+                System.out.println("SubReddit non trovato");
+                continue;
+            }
+
+            utente.getSubReddits().add(subReddit);
+
+            System.out.println("Vuoi aggiungere un'altro SubReddit?(y/n)");
+            if (!scanner.nextLine().equalsIgnoreCase("y"))
+                break;
+        }
+
         utenteService.save(utente);
         System.out.println("Utente salvato!");
         System.out.println();
@@ -118,17 +159,11 @@ public class CliManager {
         System.out.println();
     }
 
-    private void edit() {
-        System.out.print("id: ");
-        Utente utente = utenteService.findById(scanner.nextLong());
-        scanner.nextLine();
 
-        if (utente == null) {
-            System.out.println("Utente non trovato!");
-            return;
-        }
-
-        salvaUtente(utente);
+    private void printSubReddits() {
+        System.out.println("SubReddit disponibili");
+        System.out.println(subRedditService.findAll());
+        System.out.println();
     }
 
     private void delete() {

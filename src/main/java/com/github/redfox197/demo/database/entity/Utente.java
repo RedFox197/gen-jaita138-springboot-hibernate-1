@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 public class Utente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(length = 64)
     private String nome;

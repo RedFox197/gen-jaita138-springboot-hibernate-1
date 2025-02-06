@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.github.redfox197.demo.cli.CliManager;
 import com.github.redfox197.demo.database.service.RoleService;
+import com.github.redfox197.demo.database.service.SubRedditService;
 import com.github.redfox197.demo.database.service.UtenteService;
 
 @SpringBootApplication
@@ -15,6 +16,8 @@ public class DemoApplication implements CommandLineRunner {
 	private UtenteService utenteService;
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private SubRedditService subRedditService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -22,7 +25,7 @@ public class DemoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		new CliManager(utenteService, roleService);
+		new CliManager(utenteService, roleService, subRedditService);
 	}
 
 }

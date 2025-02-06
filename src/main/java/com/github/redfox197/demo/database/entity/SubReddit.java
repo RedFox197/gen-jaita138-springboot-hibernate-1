@@ -59,6 +59,6 @@ public class SubReddit {
 
     @Override
     public String toString() {
-        return "SubReddit [id=" + id + ", name=" + name + ", description=" + description + "]";
+        return "SubReddit [\nid=" + id + ", \nname=" + name + ", \ndescription=" + description + "\n]";
     }
 }
