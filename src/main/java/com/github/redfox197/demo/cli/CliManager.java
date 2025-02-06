@@ -1,5 +1,6 @@
 package com.github.redfox197.demo.cli;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -55,16 +56,16 @@ public class CliManager {
                 delete();
                 break;
             case 5:
-                opt5();
+                findByNomeStartingWithA();
                 break;
             case 6:
-                opt6();
+                findByCreditoGreatherThan10();
                 break;
             case 7:
-                opt7();
+                findByNomeNullOrCognomeNull();
                 break;
             case 8:
-                opt8();
+                findyByCreditoBetween0And10();
                 break;
             case 9:
                 return;
@@ -97,9 +98,6 @@ public class CliManager {
             return;
         }
 
-        System.out.println("SUBCOSO");
-        System.out.println(utente.getSubReddits());
-
         salvaUtente(utente);
     }
 
@@ -127,10 +125,31 @@ public class CliManager {
         Role role = roleService.findById(scanner.nextLong()).orElse(null);
         utente.setRole(role);
         scanner.nextLine();
-
         System.out.println();
+
+        if (isEdit) {
+            System.out.println("SubReddit Attuali");
+            System.out.println(utente.getSubReddits());
+
+            System.out.println("Resettarli per modificare?");
+            if (scanner.nextLine().equalsIgnoreCase("y"))
+                utente.setSubReddits(new ArrayList<>());
+        }
+
         while (true) {
-            printSubReddits();
+            System.out.println("Vuoi aggiungere dei SubReddit? (y/n)");
+            if (!scanner.nextLine().equalsIgnoreCase("y"))
+                break;
+
+            List<SubReddit> avSub = avaibleSubReddits(utente);
+            if (avSub.isEmpty()) {
+                System.out.println("Non ci sono SubReddit disponibili!");
+                break;
+            }
+
+            System.out.println("SubReddit disponibili: ");
+            avSub.forEach(System.out::println);
+
             System.out.println("SubReddit id: ");
             Long subRedditId = scanner.nextLong();
             scanner.nextLine();
@@ -142,10 +161,6 @@ public class CliManager {
             }
 
             utente.getSubReddits().add(subReddit);
-
-            System.out.println("Vuoi aggiungere un'altro SubReddit?(y/n)");
-            if (!scanner.nextLine().equalsIgnoreCase("y"))
-                break;
         }
 
         utenteService.save(utente);
@@ -159,11 +174,9 @@ public class CliManager {
         System.out.println();
     }
 
-
-    private void printSubReddits() {
-        System.out.println("SubReddit disponibili");
-        System.out.println(subRedditService.findAll());
-        System.out.println();
+    private List<SubReddit> avaibleSubReddits(Utente utente) {
+        List<Long> sbID = utente.getSubReddits().stream().map(SubReddit::getId).toList();
+        return subRedditService.findAll().stream().filter(sb -> !sbID.contains(sb.getId())).toList();
     }
 
     private void delete() {
@@ -181,25 +194,25 @@ public class CliManager {
         System.out.println();
     }
 
-    private void opt5() {
+    private void findByNomeStartingWithA() {
         System.out.println("Utenti che iniziano con a");
         System.out.println(utenteService.findByNomeStartingWithA());
         System.out.println();
     }
 
-    private void opt6() {
+    private void findByCreditoGreatherThan10() {
         System.out.println("Utenti con credito superiore a 10");
         System.out.println(utenteService.findByCreditoGreatherThan10());
         System.out.println();
     }
 
-    private void opt7() {
+    private void findByNomeNullOrCognomeNull() {
         System.out.println("Utenti con nome o cognome null");
         System.out.println(utenteService.findByNomeNullOrCognomeNull());
         System.out.println();
     }
 
-    private void opt8() {
+    private void findyByCreditoBetween0And10() {
         System.out.println("Utente con credito positivo e inferiore a 10");
         System.out.println(utenteService.findyByCreditoBetween0And10());
         System.out.println();

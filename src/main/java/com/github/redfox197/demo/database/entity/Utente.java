@@ -1,5 +1,6 @@
 package com.github.redfox197.demo.database.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -33,7 +34,7 @@ public class Utente {
     private Role role;
 
     @ManyToMany
-    private List<SubReddit> subReddits;
+    private List<SubReddit> subReddits = new ArrayList<>();
 
     public Utente() {
     }
